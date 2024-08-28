@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const h1 = document.querySelector('header h1');
     const burger = document.querySelector('.burger');
     const originalLogo = document.querySelector('#original-logo'); // ID for the original logo
-    const logoSrc = 'images/logo.png'; // Path to your logo image
+    const logoSrc = '../../images/logo.png'; // Path to your logo image
     const numberOfLogos = 20; // Number of logos to create
     const logos = [];
     const logoSize = 50; // Size of the logos (adjust as needed)
