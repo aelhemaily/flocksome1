@@ -642,9 +642,10 @@ footer a:hover {
     font-size: 1.6rem;
    }
 
-   nav{
-    height: 40px;
-   }
+   .nav-active{
+    top: 3%;
+    }
+ 
 
    header {
     height: auto;
