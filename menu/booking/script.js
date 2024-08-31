@@ -170,16 +170,21 @@ document.addEventListener("DOMContentLoaded", function () {
     // Make logos move away from the cursor
     header.addEventListener('mousemove', moveLogosAwayFromCursor);
 });
-// script.js
 
 document.addEventListener("DOMContentLoaded", function() {
     const calendarGrid = document.getElementById('calendar-grid');
+    const calendarDays = document.getElementById('calendar-days');
     const calendarHeader = document.getElementById('current-month');
     const timeSlotsElement = document.getElementById('time-slots');
     const bookingFormElement = document.getElementById('booking-form');
     const confirmationElement = document.getElementById('confirmation');
+    const modal = document.getElementById('confirmation-modal');
+    const orderSummary = document.getElementById('order-summary');
+    const placeOrderButton = document.getElementById('place-order');
+    const cancelOrderButton = document.getElementById('cancel-order');
 
     const availableDates = {
+        '2024-08-27': { morning: 'available', evening: 'booked' },
         '2024-09-01': { morning: 'available', evening: 'booked' },
         '2024-09-02': { morning: 'available', evening: 'available' },
         '2024-09-03': { morning: 'booked', evening: 'available' }
@@ -194,24 +199,32 @@ document.addEventListener("DOMContentLoaded", function() {
         const month = currentDate.getMonth();
         const firstDayOfMonth = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Su'];
 
-        calendarGrid.innerHTML = '';
+        // Update the calendar header
         calendarHeader.textContent = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
-        // Fill the calendar grid
+        // Update the day letters
+        calendarDays.innerHTML = dayNames.map(day => `<div>${day}</div>`).join('');
+
+        // Clear the calendar grid
+        calendarGrid.innerHTML = '';
+
+        // Fill the calendar grid with empty divs for the days before the first day of the month
         for (let i = 0; i < firstDayOfMonth; i++) {
             const filler = document.createElement('div');
             calendarGrid.appendChild(filler);
         }
 
+        // Fill the calendar grid with the days of the month
         for (let day = 1; day <= daysInMonth; day++) {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             const dateElement = document.createElement('div');
             dateElement.classList.add('date');
+            dateElement.textContent = day;
             if (!availableDates[dateStr] || Object.values(availableDates[dateStr]).every(slot => slot === 'booked')) {
                 dateElement.classList.add('unavailable');
             }
-            dateElement.textContent = day;
             dateElement.addEventListener('click', () => handleDateClick(dateStr));
             calendarGrid.appendChild(dateElement);
         }
@@ -238,13 +251,30 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function handleSlotClick(slot) {
-        if (availableDates[selectedDate][slot] === 'booked') return;
-
+        console.log('Slot clicked:', slot); // Debugging
+        if (availableDates[selectedDate][slot] === 'booked') {
+            console.log('Slot is booked, not proceeding'); // Debugging
+            return;
+        }
+    
         selectedSlot = slot;
         timeSlotsElement.style.display = 'none';
         bookingFormElement.style.display = 'block';
+    
+        console.log('Attempting to scroll...'); // Debugging
+    
+        // Delay the scrolling slightly to ensure the form is displayed
+        setTimeout(() => {
+            const appointmentForm = document.getElementById('appointment-form');
+            if (appointmentForm) {
+                appointmentForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                console.log('Scrolled to appointment form'); // Debugging
+            } else {
+                console.log('Appointment form element not found'); // Debugging
+            }
+        }, 100);
     }
-
+    
     document.getElementById('prev-month').addEventListener('click', () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
         updateCalendar();
@@ -258,19 +288,65 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('appointment-form').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Form data processing (this would typically involve sending the data to a server)
+        // Gather form data
+        const formData = new FormData(this);
+        let summaryHtml = `
+        <p><strong>Date:</strong> ${selectedDate}</p>
+        <p><strong>Time:</strong> ${selectedSlot}</p>
+        <h3>Sender Details</h3>
+        <p><strong>Name:</strong> ${formData.get('sender-name')}</p>
+        <p><strong>Email:</strong> ${formData.get('email')}</p>
+        <p><strong>Flock Size:</strong> ${formData.get('flock-size')}</p>
+        <p><strong>Anonymous:</strong> ${formData.get('anonymous')}</p>
+        <h3>Recipient Details</h3>
+        <p><strong>Name:</strong> ${formData.get('recipient-name')}</p>
+        <p><strong>Address:</strong> ${formData.get('recipient-address')}</p>
+        <p><strong>City/Area:</strong> ${formData.get('city-area')}</p>
+    `;
+    
+    // Only include the customized message if it's not empty
+    const customMessage = formData.get('custom-message');
+    if (customMessage.trim() !== '') {
+        summaryHtml += `<h3>Customized Message</h3><p>${customMessage}</p>`;
+    }
+    
+    // Only include the other notes if they're not empty
+    const otherNotes = formData.get('other-notes');
+    if (otherNotes.trim() !== '') {
+        summaryHtml += `<h3>Other Notes/Instructions</h3><p>${otherNotes}</p>`;
+    }
+    
+    orderSummary.innerHTML = summaryHtml;
+    
+        orderSummary.innerHTML = summaryHtml;
+        modal.style.display = 'flex';
+    });
+
+    placeOrderButton.addEventListener('click', () => {
+        // Place the order and confirm booking
+        modal.style.display = 'none';
         confirmationElement.style.display = 'block';
         confirmationElement.textContent = `Booking confirmed for ${selectedDate} in the ${selectedSlot}!`;
-
-        // Reset form and hide it
-        bookingFormElement.style.display = 'none';
-        this.reset();
 
         // Mark the slot as booked
         availableDates[selectedDate][selectedSlot] = 'booked';
 
+        // Reset form and hide it
+        bookingFormElement.style.display = 'none';
+        document.getElementById('appointment-form').reset();
+
         // Re-render the calendar
         updateCalendar();
+
+        // Hide confirmation after a few seconds and reset UI
+        setTimeout(() => {
+            confirmationElement.style.display = 'none';
+            timeSlotsElement.style.display = 'none';
+        }, 3000);
+    });
+
+    cancelOrderButton.addEventListener('click', () => {
+        modal.style.display = 'none';
     });
 
     updateCalendar();

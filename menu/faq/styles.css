@@ -1037,3 +1037,13 @@ main::after {
     .map-description {
         margin: 0;
     }
+
+    .book-now {
+       
+        cursor: pointer;
+        margin:  auto; /* Centers the slot element horizontally */
+        text-align: center;
+        max-width: 20vh;
+        display: block; /* Ensures the element takes up full width within its container */
+    }
+

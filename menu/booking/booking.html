@@ -34,8 +34,8 @@
     </header>
     
     <main>
-        <div class="map-section">
-<!--             
+        <!-- <div class="map-section"> -->
+            
             <div class="booking-system">
                 <h1>Book Your Appointment</h1>
                 <div class="calendar-header">
@@ -43,8 +43,17 @@
                     <h2 id="current-month"></h2>
                     <span id="next-month" class="arrow">&#9654;</span>
                 </div>
-                <div id="calendar-days"></div>
+                <div id="calendar-days">
+                    <div>Mo</div>
+                    <div>Tu</div>
+                    <div>We</div>
+                    <div>Th</div>
+                    <div>Fr</div>
+                    <div>Sa</div>
+                    <div>Su</div>
+                </div>
                 <div id="calendar-grid"></div>
+                
                 <div id="time-slots"></div>
                 <div id="booking-form" style="display: none;">
                     <form id="appointment-form">
@@ -56,15 +65,24 @@
                         <input type="email" id="email" name="email" required>
         
                         <label for="flock-size">Flamingo Flock Size</label>
-                        <select id="flock-size" name="flock-size" required>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                            <option value="40">40</option>
-                        </select>
+                        <div id="flock-size-group">
+                            <label>
+                                <input type="radio" name="flock-size" value="10" required> 10
+                            </label>
+                            <label>
+                                <input type="radio" name="flock-size" value="20"> 20
+                            </label>
+                            <label>
+                                <input type="radio" name="flock-size" value="30"> 30
+                            </label>
+                            <label>
+                                <input type="radio" name="flock-size" value="40"> 40
+                            </label>
+                        </div>
+                        
         
                         <label>Send Anonymously?</label>
-                        <div>
+                        <div class = "anon-div">
                             <input type="radio" id="anonymous-yes" name="anonymous" value="yes" required>
                             <label for="anonymous-yes">Yes</label>
         
@@ -83,16 +101,26 @@
                         <input type="text" id="city-area" name="city-area" required>
         
                         <label for="custom-message">Customized Message</label>
-                        <textarea id="custom-message" name="custom-message" rows="4" ></textarea>
+                        <textarea id="custom-message" name="custom-message" rows="4"></textarea>
         
                         <label for="other-notes">Other Notes/Instructions</label>
-                        <textarea id="other-notes" name="other-notes" rows="4" ></textarea>
+                        <textarea id="other-notes" name="other-notes" rows="4"></textarea>
         
                         <button type="submit">Confirm Booking</button>
                     </form>
                 </div>
+        
+                <div id="confirmation-modal" class="modal">
+                    <div class="modal-content">
+                        <h2>Confirm Your Booking</h2>
+                        <div id="order-summary"></div>
+                        <button id="place-order">Place Order</button>
+                        <button id="cancel-order">Cancel</button>
+                    </div>
+                </div>
+        
                 <div id="confirmation"></div>
-            </div> -->
+            </div>
             
         </div>
         
