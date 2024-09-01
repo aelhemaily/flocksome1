@@ -183,16 +183,32 @@ document.addEventListener("DOMContentLoaded", function() {
     const placeOrderButton = document.getElementById('place-order');
     const cancelOrderButton = document.getElementById('cancel-order');
 
-    const availableDates = {
-        '2024-08-27': { morning: 'available', evening: 'booked' },
-        '2024-09-01': { morning: 'available', evening: 'booked' },
-        '2024-09-02': { morning: 'available', evening: 'available' },
-        '2024-09-03': { morning: 'booked', evening: 'available' }
-    };
-
+    let availableDates = {};
     let currentDate = new Date();
     let selectedDate = null;
     let selectedSlot = null;
+
+    // Fetch available dates from JSON file
+    fetch('../../dates.json')
+        .then(response => response.json())
+        .then(data => {
+            availableDates = data;
+            updateAvailableDates();
+            updateCalendar();
+        })
+        .catch(error => console.error('Error loading available dates:', error));
+
+    function updateAvailableDates() {
+        const today = new Date();
+        for (const dateStr in availableDates) {
+            const [day, month, year] = dateStr.split('-').map(Number);
+            const date = new Date(year, month - 1, day);
+            
+            if (date < today) {
+                availableDates[dateStr] = { morning: 'booked', evening: 'booked' };
+            }
+        }
+    }
 
     function updateCalendar() {
         const year = currentDate.getFullYear();
@@ -218,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Fill the calendar grid with the days of the month
         for (let day = 1; day <= daysInMonth; day++) {
-            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const dateStr = `${String(day).padStart(2, '0')}-${String(month + 1).padStart(2, '0')}-${year}`;
             const dateElement = document.createElement('div');
             dateElement.classList.add('date');
             dateElement.textContent = day;
@@ -272,82 +288,103 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 console.log('Appointment form element not found'); // Debugging
             }
-        }, 100);
+        }, 50);
     }
     
     document.getElementById('prev-month').addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() - 1);
+        currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
         updateCalendar();
     });
 
     document.getElementById('next-month').addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() + 1);
+        currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
         updateCalendar();
     });
 
     document.getElementById('appointment-form').addEventListener('submit', function(event) {
         event.preventDefault();
-
+    
         // Gather form data
         const formData = new FormData(this);
+        
+        // Convert selectedDate string to Date object
+        const [day, month, year] = selectedDate.split('-').map(Number);
+        const dateObject = new Date(year, month - 1, day);
+        
+        // Format date as "4 Sep 24"
+        const formattedDate = dateObject.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: '2-digit'
+        }).replace(',', '');
+        
         let summaryHtml = `
-        <p><strong>Date:</strong> ${selectedDate}</p>
-        <p><strong>Time:</strong> ${selectedSlot}</p>
-        <h3>Sender Details</h3>
-        <p><strong>Name:</strong> ${formData.get('sender-name')}</p>
-        <p><strong>Email:</strong> ${formData.get('email')}</p>
-        <p><strong>Flock Size:</strong> ${formData.get('flock-size')}</p>
-        <p><strong>Anonymous:</strong> ${formData.get('anonymous')}</p>
-        <h3>Recipient Details</h3>
-        <p><strong>Name:</strong> ${formData.get('recipient-name')}</p>
-        <p><strong>Address:</strong> ${formData.get('recipient-address')}</p>
-        <p><strong>City/Area:</strong> ${formData.get('city-area')}</p>
-    `;
-    
-    // Only include the customized message if it's not empty
-    const customMessage = formData.get('custom-message');
-    if (customMessage.trim() !== '') {
-        summaryHtml += `<h3>Customized Message</h3><p>${customMessage}</p>`;
-    }
-    
-    // Only include the other notes if they're not empty
-    const otherNotes = formData.get('other-notes');
-    if (otherNotes.trim() !== '') {
-        summaryHtml += `<h3>Other Notes/Instructions</h3><p>${otherNotes}</p>`;
-    }
-    
-    orderSummary.innerHTML = summaryHtml;
-    
+            <p><strong>Date:</strong> ${formattedDate}</p>
+            <p><strong>Time:</strong> ${selectedSlot}</p>
+            <h3>Sender Details</h3>
+            <p><strong>Sender:</strong> ${formData.get('sender-name')}</p>
+            <p><strong>Email:</strong> ${formData.get('email')}</p>
+            <p><strong>Flock Size:</strong> ${formData.get('flock-size')}</p>
+            <p><strong>Anonymous:</strong> ${formData.get('anonymous')}</p>
+            <h3>Recipient Details</h3>
+            <p><strong>Recipient:</strong> ${formData.get('recipient-name')}</p>
+            <p><strong>Address:</strong> ${formData.get('recipient-address')}</p>
+            <p><strong>City/Area:</strong> ${formData.get('city-area')}</p>
+        `;
+        
+        // Only include the customized message if it's not empty
+        const customMessage = formData.get('custom-message');
+        if (customMessage.trim() !== '') {
+            summaryHtml += `<h3>Customized Message</h3><p>${customMessage}</p>`;
+        }
+        
+        // Only include the other notes if they're not empty
+        const otherNotes = formData.get('other-notes');
+        if (otherNotes.trim() !== '') {
+            summaryHtml += `<h3>Other Notes/Instructions</h3><p>${otherNotes}</p>`;
+        }
+        
         orderSummary.innerHTML = summaryHtml;
         modal.style.display = 'flex';
     });
+    
 
     placeOrderButton.addEventListener('click', () => {
+        // Convert selectedDate string to Date object
+        const [day, month, year] = selectedDate.split('-').map(Number);
+        const dateObject = new Date(year, month - 1, day);
+        
+        // Format date as "4 Sep 24"
+        const formattedDate = dateObject.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: '2-digit'
+        }).replace(',', '');
+    
         // Place the order and confirm booking
         modal.style.display = 'none';
         confirmationElement.style.display = 'block';
-        confirmationElement.textContent = `Booking confirmed for ${selectedDate} in the ${selectedSlot}!`;
-
+        confirmationElement.textContent = `Booking confirmed for ${formattedDate} in the ${selectedSlot}!`;
+    
         // Mark the slot as booked
         availableDates[selectedDate][selectedSlot] = 'booked';
-
+    
         // Reset form and hide it
         bookingFormElement.style.display = 'none';
         document.getElementById('appointment-form').reset();
-
+    
         // Re-render the calendar
         updateCalendar();
-
-        // Hide confirmation after a few seconds and reset UI
-        setTimeout(() => {
-            confirmationElement.style.display = 'none';
-            timeSlotsElement.style.display = 'none';
-        }, 3000);
+    
+        // // Hide confirmation after a few seconds and reset UI
+        // setTimeout(() => {
+        //     confirmationElement.style.display = 'none';
+        //     timeSlotsElement.style.display = 'none';
+        // }, 3000);
     });
-
+    
     cancelOrderButton.addEventListener('click', () => {
         modal.style.display = 'none';
     });
-
-    updateCalendar();
+    
 });
