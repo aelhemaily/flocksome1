@@ -1032,3 +1032,10 @@ main::after {
     .name {
         max-width: 200px;
     }
+
+    @media (min-width: 1250px) and (max-width: 1930px)
+    {
+        header {
+            max-height: 150px;
+        }
+    }

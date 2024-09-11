@@ -445,6 +445,7 @@ p {
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.5); /* Added metallic glow */
     margin: auto;
     max-width: 40%;
+    
 }
 
 
@@ -933,7 +934,7 @@ main::after {
 
     .faq-section {
         font-family: 'Arial', sans-serif;
-        width: 80%;
+        width: 100%;
         margin: 50px auto;
         padding: 2rem;
         background: linear-gradient(135deg, #825484, #200f21);
@@ -1045,6 +1046,7 @@ main::after {
         text-align: center;
         max-width: 20vh;
         display: block; /* Ensures the element takes up full width within its container */
+        margin-top: 50px;
     }
 
     #service-area-link {
@@ -1061,3 +1063,23 @@ main::after {
         border-color: #483d8b;
     }
     
+
+    @media (min-width: 1250px) and (max-width: 1930px)
+{
+    header {
+        max-height: 150px;
+    }
+}
+
+.book-now {
+    white-space: nowrap;
+    padding: 12px 0;
+    max-width: 16vh;
+}
+
+@media (max-width: 345px) 
+{
+    .book-now {
+        padding: 10px;
+    }
+}

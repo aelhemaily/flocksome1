@@ -2,5 +2,10 @@
     "27-08-2024": { "morning": "available", "evening": "booked" },
     "21-09-2024": { "morning": "available", "evening": "booked" },
     "22-09-2024": { "morning": "available", "evening": "available" },
-    "23-09-2024": { "morning": "booked", "evening": "available" }
+    "23-09-2024": { "morning": "booked", "evening": "available" },
+    "29-09-2024": { "morning": "booked", "evening": "available" },
+    "29-08-2024": { "morning": "booked", "evening": "available" },
+    "30-08-2024": { "morning": "booked", "evening": "available" },
+    "24-11-2024": { "morning": "booked", "evening": "available" }
+
 }

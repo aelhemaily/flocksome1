@@ -118,7 +118,7 @@ h1 {
 header {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7));
     backdrop-filter: blur(22px);
-    padding: 20px 0;
+    padding:55px 0;
     position: fixed;
     width: 100%;
     z-index: 1000;
@@ -407,6 +407,7 @@ h2 {
     margin-bottom: 20px;
     color: #ffffff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin: auto;
 }
 
 p {
@@ -627,9 +628,16 @@ footer a:hover {
     }
 
     .book-now {
-        padding: 12px 24px;
-        font-size: 1rem;
+        padding: 15px 15px;
+        font-size: 0.8rem;
     }
+
+    .book-now {
+        
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+    
 }
 
 
@@ -649,6 +657,7 @@ footer a:hover {
 
    header {
     height: auto;
+    
    }
 
     footer {
@@ -886,7 +895,7 @@ footer {
     }
 
     .map-description h2 {
-        font-size: 2rem;
+        font-size: 4rem;
     }
 
     .map-description p {
@@ -919,14 +928,35 @@ main::after {
 @media (min-width: 1220px) {
     .map-section img {
     
-        max-width: 40%;
+        max-width: 31%;
         max-height: 90%;
        
     }
-
+   
 }
 
 @media (min-width: 1668px) {
     .map-section p{
         font-size: 2.5rem;
-    }}
+    }
+
+}
+
+@media (min-width: 1250px) and (max-width: 1930px)
+{
+    header {
+        max-height: 150px;
+    }
+}
+
+.book-now {
+    white-space: nowrap;
+    padding: 20px;
+}
+
+@media (max-width: 345px) 
+{
+    .book-now {
+        padding: 10px;
+    }
+}

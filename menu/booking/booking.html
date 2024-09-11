@@ -22,6 +22,7 @@
                     <li><a href="booking.html">Booking</a></li>
                     <li><a href="../service-area/service-area.html">Service Area</a></li>
                     <li><a href="../faq/faq.html">FAQ</a></li>
+                    <li><a href="../policies/policies.html">Our Policies</a></li>
                     <li><a href="../contact-us/contact-us.html">Contact Us</a></li>
                 </ul>
             </nav>
@@ -34,96 +35,90 @@
     </header>
     
     <main>
-        <!-- <div class="map-section"> -->
-            
-            <div class="booking-system">
-                <h1>Book Your Appointment</h1>
-                <div class="calendar-header">
-                    <span id="prev-month" class="arrow">&#9664;</span>
-                    <h2 id="current-month"></h2>
-                    <span id="next-month" class="arrow">&#9654;</span>
-                </div>
-                <div id="calendar-days">
-                    <div>Mo</div>
-                    <div>Tu</div>
-                    <div>We</div>
-                    <div>Th</div>
-                    <div>Fr</div>
-                    <div>Sa</div>
-                    <div>Su</div>
-                </div>
-                <div id="calendar-grid"></div>
-                
-                <div id="time-slots"></div>
-                <div id="booking-form" style="display: none;">
-                    <form id="appointment-form">
-                        <h2>Sender Details</h2>
-                        <label for="sender-name">Sender Name</label>
-                        <input type="text" id="sender-name" name="sender-name" required>
-        
-                        <label for="email">Your Email</label>
-                        <input type="email" id="email" name="email" required>
-        
-                        <label for="flock-size">Flamingo Flock Size</label>
-                        <div id="flock-size-group">
-                            <label>
-                                <input type="radio" name="flock-size" value="10" required> 10
-                            </label>
-                            <label>
-                                <input type="radio" name="flock-size" value="20"> 20
-                            </label>
-                            <label>
-                                <input type="radio" name="flock-size" value="30"> 30
-                            </label>
-                            <label>
-                                <input type="radio" name="flock-size" value="40"> 40
-                            </label>
-                        </div>
-                        
-        
-                        <label>Send Anonymously?</label>
-                        <div class = "anon-div">
-                            <input type="radio" id="anonymous-yes" name="anonymous" value="yes" required>
-                            <label for="anonymous-yes">Yes</label>
-        
-                            <input type="radio" id="anonymous-no" name="anonymous" value="no" required>
-                            <label for="anonymous-no">No</label>
-                        </div>
-        
-                        <h2>Recipient Details</h2>
-                        <label for="recipient-name">Recipient Name</label>
-                        <input type="text" id="recipient-name" name="recipient-name" required>
-        
-                        <label for="recipient-address">Recipient Address</label>
-                        <input type="text" id="recipient-address" name="recipient-address" required>
-        
-                        <label for="city-area">City/Area</label>
-                        <input type="text" id="city-area" name="city-area" required>
-        
-                        <label for="custom-message">Customized Message</label>
-                        <textarea id="custom-message" name="custom-message" rows="4"></textarea>
-        
-                        <label for="other-notes">Other Notes/Instructions</label>
-                        <textarea id="other-notes" name="other-notes" rows="4"></textarea>
-        
-                        <button type="submit">Confirm Booking</button>
-                    </form>
-                </div>
-        
-                <div id="confirmation-modal" class="modal">
-                    <div class="modal-content">
-                        <h2>Confirm Your Booking</h2>
-                        <div id="order-summary"></div>
-                        <button id="place-order">Place Order</button>
-                        <button id="cancel-order">Cancel</button>
-                    </div>
-                </div>
-        
-                <div id="confirmation"></div>
+        <div class="booking-system">
+            <h1>Book Your Appointment</h1>
+            <div class="calendar-header">
+                <span id="prev-month" class="arrow">&#9664;</span>
+                <h2 id="current-month"></h2>
+                <span id="next-month" class="arrow">&#9654;</span>
             </div>
-            
+            <div id="calendar-days">
+                <div>Mo</div>
+                <div>Tu</div>
+                <div>We</div>
+                <div>Th</div>
+                <div>Fr</div>
+                <div>Sa</div>
+                <div>Su</div>
+            </div>
+            <div id="calendar-grid"></div>
+                
+            <div id="time-slots"></div>
+            <div id="booking-form" style="display: none;">
+                <form id="appointment-form">
+                    <h2>Sender Details</h2>
+                    <label for="sender-name">Sender Name <span class="required">*</span></label>
+                    <input type="text" id="sender-name" name="sender-name" required>
+    
+                    <label for="email">Your Email <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required>
+    
+                    <label for="flock-size">Flamingo Flock Size <span class="required">*</span></label>
+                    <div id="flock-size-group">
+                        <label>
+                            <input type="radio" name="flock-size" value="10" required> 10 ($60)
+                        </label>
+                        <label>
+                            <input type="radio" name="flock-size" value="20"> 20 ($70)
+                        </label>
+                        <label>
+                            <input type="radio" name="flock-size" value="30"> 30 ($80)
+                        </label>
+                        <label>
+                            <input type="radio" name="flock-size" value="40"> 40 ($90)
+                        </label>
+                    </div>
+    
+                    <label>Send Anonymously? <span class="required">*</span></label>
+                    <div class="anon-div">
+                        <input type="radio" id="anonymous-yes" name="anonymous" value="yes" required>
+                        <label for="anonymous-yes">Yes</label>
+    
+                        <input type="radio" id="anonymous-no" name="anonymous" value="no" required>
+                        <label for="anonymous-no">No</label>
+                    </div>
+    
+                    <h2>Recipient Details</h2>
+                    <label for="recipient-name">Recipient Name <span class="required">*</span></label>
+                    <input type="text" id="recipient-name" name="recipient-name" required>
+    
+                    <label for="recipient-address">Recipient Address <span class="required">*</span></label>
+                    <input type="text" id="recipient-address" name="recipient-address" required>
+    
+                    <label for="city-area">City/Area <span class="required">*</span></label>
+                    <input type="text" id="city-area" name="city-area" required>
+    
+                    <label for="custom-message">Customized Message</label>
+                    <textarea id="custom-message" name="custom-message" rows="4"></textarea>
+    
+                    <label for="other-notes">Other Notes/Instructions</label>
+                    <textarea id="other-notes" name="other-notes" rows="4"></textarea>
+    
+                    <button type="submit">Confirm Booking</button>
+                </form>
+            </div>
+    
+            <div id="confirmation-modal" class="modal">
+                <div class="modal-content">
+                    <h2>Confirm Your Booking</h2>
+                    <div id="order-summary"></div>
+                    <button id="place-order">Place Order</button>
+                    <button id="cancel-order">Cancel</button>
+                </div>
+            </div>
+    
+            <div id="confirmation"></div>
         </div>
-        
     </main>
 
     <footer>

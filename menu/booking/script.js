@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const formattedDate = dateObject.toLocaleDateString('en-GB', {
             day: 'numeric',
             month: 'short',
-            year: '2-digit'
+            year: 'numeric'
         }).replace(',', '');
         
         let summaryHtml = `
@@ -358,7 +358,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const formattedDate = dateObject.toLocaleDateString('en-GB', {
             day: 'numeric',
             month: 'short',
-            year: '2-digit'
+            year: 'numeric'
         }).replace(',', '');
     
         // Place the order and confirm booking

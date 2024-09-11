@@ -118,7 +118,7 @@ h1 {
 header {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7));
     backdrop-filter: blur(22px);
-    padding: 20px 0;
+    padding: 55px 0;
     position: fixed;
     width: 100%;
     z-index: 1000;
@@ -1060,4 +1060,11 @@ main::after {
         color: #483d8b; /* Darker purple on hover */
         border-color: #483d8b;
     }
+    @media (min-width: 1250px) and (max-width: 1930px)
+    {
+        header {
+            max-height: 150px;
+        }
+    }
+
     
