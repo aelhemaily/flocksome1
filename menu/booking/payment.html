@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../images/logo.png" type="image/png">
+    <title>Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="script.js"></script>
+    <style>
+       
+        .container2 {
+            max-width: 480px;
+            width: 100%;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin: auto;
+            
+        }
+     
+        .details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .detail-item {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            text-align: center;
+            margin: 0 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .detail-item:hover {
+            transform: translateY(-5px);
+        }
+        .detail-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .detail-item span {
+            display: block;
+            font-size: 18px;
+            font-weight: 600;
+            color: #495057;
+            margin-top: 5px;
+        }
+        #card-element {
+            margin-bottom: 24px;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            background-color: #fff;
+        }
+        .container2 {
+    max-width: 480px;
+    width: 100%;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    margin: auto;
+}
+
+/* Other styles remain the same */
+
+#payment-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#card-element {
+    width: 100%;
+    margin-bottom: 24px;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+button {
+    width: 28%;
+    padding: 14px;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+#error-message {
+    color: #dc3545;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+@media (max-width: 480px) {
+    .container2 {
+        padding: 30px;
+    }
+    .details {
+        flex-direction: column;
+    }
+    .detail-item {
+        margin: 0 0 15px 0;
+    }
+    button {
+        width: 33%;
+        white-space: nowrap;
+    }
+}
+        h2 {
+    text-align: center;
+}
+.container2 h2 {
+    font-size: 2rem;
+}
+
+button {
+    white-space: nowrap;
+    
+}
+
+header { margin-bottom: 50px;}
+footer { margin-top: 50px;}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="../../images/logo.png" alt="Flock Some1 Logo">
+            </div>
+            <h1>Flock Some1</h1>
+            <nav>
+                <ul>
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="booking.html">Booking</a></li>
+                    <li><a href="../service-area/service-area.html">Service Area</a></li>
+                    <li><a href="../faq/faq.html">FAQ</a></li>
+                    <li><a href="../policies/policies.html">Our Policies</a></li>
+                    <li><a href="../contact-us/contact-us.html">Contact Us</a></li>
+                </ul>
+            </nav>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container2">
+        <h2>Complete Your Payment</h2>
+        <div class="details">
+            <div class="detail-item">
+                <p>Date</p>
+                <span id="payment-date"></span>
+            </div>
+            <div class="detail-item">
+                <p>Time Slot</p>
+                <span id="payment-slot"></span>
+            </div>
+            <div class="detail-item">
+                <p>Amount</p>
+                <span id="payment-amount"></span>
+            </div>
+        </div>
+        <form id="payment-form">
+            <div id="card-element"></div>
+            <button type="submit">Pay Now</button>
+            <div id="error-message"></div>
+        </form>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Flock Some1. All rights reserved.</p>
+            <div class="social-media">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const stripe = Stripe('your-publishable-key-here'); // Replace with your actual Stripe publishable key
+        const elements = stripe.elements();
+        const cardElement = elements.create('card');
+        cardElement.mount('#card-element');
+    
+        const urlParams = new URLSearchParams(window.location.search);
+        const date = urlParams.get('date');
+    
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+    
+        const slot = capitalizeFirstLetter(urlParams.get('slot'));
+        document.getElementById('payment-slot').textContent = slot;
+    
+        const amount = urlParams.get('amount') / 100; // Convert from cents to dollars
+    
+        function formatDate(dateString) {
+            const [day, month, year] = dateString.split('-');
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${parseInt(day)} ${monthNames[parseInt(month) - 1]} ${year}`;
+        }
+    
+        document.getElementById('payment-date').textContent = formatDate(date);
+        document.getElementById('payment-amount').textContent = `$${amount.toFixed(2)}`;
+    
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+    
+            const {token, error} = await stripe.createToken(cardElement);
+    
+            if (error) {
+                document.getElementById('error-message').textContent = error.message;
+            } else {
+                const response = await fetch('http://localhost:3000/payment', { // Updated URL
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token: token.id,
+                        amount: amount * 100 // Convert back to cents
+                    })
+                });
+    
+                const result = await response.json();
+    
+                if (result.success) {
+                    window.location.href = '/success.html'; // Redirect to a success page
+                } else {
+                    document.getElementById('error-message').textContent = result.error;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

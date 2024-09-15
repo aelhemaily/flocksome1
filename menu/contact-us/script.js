@@ -183,20 +183,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     textarea.addEventListener('input', adjustTextareaHeight);
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        
+
         // Validate form
-        let isValid = true;
-        inputs.forEach(input => {
-            if (input.value.trim() === '') {
-                isValid = false;
-                input.classList.add('error');
-                input.style.borderColor = '#ff6b6b';
-            } else {
-                input.classList.remove('error');
-                input.style.borderColor = '';
-            }
+        const isValid = Array.from(inputs).every(input => {
+            const isEmpty = input.value.trim() === '';
+            input.classList.toggle('error', isEmpty);
+            input.style.borderColor = isEmpty ? '#ff6b6b' : '';
+            return !isEmpty;
         });
 
         if (isValid) {
@@ -205,20 +200,32 @@ document.addEventListener('DOMContentLoaded', function() {
             button.disabled = true;
             button.style.opacity = '0.7';
 
-            // Simulate form submission
-            setTimeout(() => {
-                button.textContent = 'Sent!';
-                button.style.backgroundColor = '#4caf50';
-                
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form)
+                });
+
+                if (response.ok) {
+                    button.textContent = 'Sent!';
+                    button.style.backgroundColor = '#4caf50';
+                    form.reset();
+                    adjustTextareaHeight();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                button.textContent = 'Failed to send';
+                button.style.backgroundColor = '#ff6b6b';
+            } finally {
                 setTimeout(() => {
                     button.textContent = originalText;
                     button.disabled = false;
                     button.style.opacity = '';
                     button.style.backgroundColor = '';
-                    form.reset();
-                    adjustTextareaHeight();
                 }, 2000);
-            }, 2000);
+            }
         }
     });
 });

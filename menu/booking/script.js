@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Burger Menu Toggle
     const burger = document.querySelector('.burger');
@@ -181,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const modal = document.getElementById('confirmation-modal');
     const orderSummary = document.getElementById('order-summary');
     const placeOrderButton = document.getElementById('place-order');
+    placeOrderButton.textContent = 'To Payment';
     const cancelOrderButton = document.getElementById('cancel-order');
 
     let availableDates = {};
@@ -350,38 +353,23 @@ document.addEventListener("DOMContentLoaded", function() {
     
 
     placeOrderButton.addEventListener('click', () => {
-        // Convert selectedDate string to Date object
         const [day, month, year] = selectedDate.split('-').map(Number);
         const dateObject = new Date(year, month - 1, day);
-        
-        // Format date as "4 Sep 24"
         const formattedDate = dateObject.toLocaleDateString('en-GB', {
             day: 'numeric',
             month: 'short',
             year: 'numeric'
         }).replace(',', '');
     
-        // Place the order and confirm booking
-        modal.style.display = 'none';
-        confirmationElement.style.display = 'block';
-        confirmationElement.textContent = `Booking confirmed for ${formattedDate} in the ${selectedSlot}!`;
+        const flockSize = document.querySelector('input[name="flock-size"]:checked').value;
+        const amountMap = { '10': 6000, '20': 7000, '30': 8000, '40': 9000 }; // Amounts in cents
     
-        // Mark the slot as booked
-        availableDates[selectedDate][selectedSlot] = 'booked';
+        const amount = amountMap[flockSize];
     
-        // Reset form and hide it
-        bookingFormElement.style.display = 'none';
-        document.getElementById('appointment-form').reset();
-    
-        // Re-render the calendar
-        updateCalendar();
-    
-        // // Hide confirmation after a few seconds and reset UI
-        // setTimeout(() => {
-        //     confirmationElement.style.display = 'none';
-        //     timeSlotsElement.style.display = 'none';
-        // }, 3000);
+        // Redirect to payment page with query parameters
+        window.location.href = `payment.html?date=${selectedDate}&slot=${selectedSlot}&amount=${amount}`;
     });
+    
     
     cancelOrderButton.addEventListener('click', () => {
         modal.style.display = 'none';

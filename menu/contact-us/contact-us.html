@@ -35,29 +35,30 @@
     </header>
     
     <main>
-        
-            <!-- <div class="map-section"> -->
-                <section class="contact-section">
-                    <h2>Contact Us</h2>
-                    <form id="contact-form">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" placeholder=" " required>
-                            <label for="name">Your Name</label>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" placeholder=" " required>
-                            <label for="email">Your Email</label>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" name="message" placeholder=" " required></textarea>
-                            <label for="message">Your Message</label>
-                        </div>
-                        <button type="submit">Send Message</button>
-                    </form>
-                </section>
+        <section class="contact-section">
+            <h2>Contact Us</h2>
+            <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="4cc8c070-044b-4528-9bdc-2e9c21795cad">
+
+                <input type="hidden" name="_subject" value="New submission from your website!">
+                <div class="form-group">
+                    <input type="text" id="name" name="name" placeholder=" " required>
+                    <label for="name">Your Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder=" " required>
+                    <label for="email">Your Email</label>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" name="message" placeholder=" " required></textarea>
+                    <label for="message">Your Message</label>
+                </div>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
         
     </main>
-
+    
     <footer>
         <div class="footer-content">
             <p>&copy; 2024 Flock Some1. All rights reserved.</p>
